@@ -4,6 +4,7 @@ import java.time.Duration;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeTest;
 
 import com.POM.ColorVisionPage;
@@ -11,7 +12,7 @@ import com.POM.InstructionPage;
 
 public class BaseTest
 {
-	public WebDriver driver;
+	public static WebDriver driver;
 	
 	@BeforeTest
 	public void setup()
@@ -21,9 +22,17 @@ public class BaseTest
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		driver.get("https://color-vision-vercel.vercel.app/");
 		
+		driver.getTitle();
+		driver.getCurrentUrl();
+		
 		new InstructionPage(driver);
 		new ColorVisionPage(driver);
 	}
 	
+	@AfterTest
+	public void closeTest()
+	{
+		driver.close();
+	}
 	
 }

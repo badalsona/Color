@@ -22,7 +22,7 @@ public class TC_006
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
 		driver.get("https://color-vision-vercel.vercel.app/");
-		
+
 		System.out.println("TITLE : "+ driver.getTitle());
 		System.out.println("URL : "+ driver.getCurrentUrl());
 
@@ -34,15 +34,15 @@ public class TC_006
 		//click till result page
 
 		methodClickonRadioOption();
-		
+
 		String score = driver.findElement(By.xpath("//div[@class='test-complete']/p")).getText();
 		System.out.println("result page : "+ score );
-		
+
 		//restart test 
 		WebElement restart = driver.findElement(By.xpath("//div[@class='test-complete']/button"));
 		Thread.sleep(1000);
 		restart.click();
-		
+
 		//close browser
 		Thread.sleep(1000);
 		driver.quit();
@@ -103,30 +103,61 @@ public class TC_006
 			List<WebElement> spanElements = driver.findElements(By.xpath("//div[@class='radio-option']/div/span"));
 
 			// Iterate through the list of span elements
-			for (int i = 0; i < spanElements.size(); i++) {
-			    WebElement spanElement = spanElements.get(i); // Get the current span element
-			    String spanno = spanElement.getText(); // Get the text of the current span element
-			    System.out.println("Span No: " + spanno); // Print the text for debugging
+			for (int i = 0; i < spanElements.size(); i++) 
+			{
+				WebElement spanElement = spanElements.get(i); // Get the current span element
+				String spanno = spanElement.getText(); // Get the text of the current span element
+				System.out.println("Span No: " + spanno); // Print the text for debugging
 
-			    // Check if the current span element matches the expected number
-			    if (number.equalsIgnoreCase(spanno)) {
-			        Thread.sleep(1000); // Pause for demonstration purposes (can be replaced by better wait mechanisms)
-			        
-			        // Get the corresponding radio option using the same index
-			        WebElement matchedOption = driver.findElements(By.xpath("//div[@class='answer-options']//div/span")).get(i);
+				// Check if the current span element matches the expected number
+				if (number.equalsIgnoreCase(spanno)) 
+				{
+					Thread.sleep(1000); // Pause for demonstration purposes (can be replaced by better wait mechanisms)
 
-			        // Use Actions class to click on the matched option
-			        Actions actions = new Actions(driver);
-			        actions.moveToElement(matchedOption).click().perform();
+					// Get the corresponding radio option using the same index
+					WebElement matchedOption = driver.findElements(By.xpath("//div[@class='answer-options']//div/span")).get(i);
 
-			        System.out.println("==========Clicked on matched radio option=============");
-			        
-			        break; // Exit the loop after finding the match
-			    }
+					// Use Actions class to click on the matched option
+					Actions actions = new Actions(driver);
+					actions.moveToElement(matchedOption).click().perform();
+
+					System.out.println("==========Clicked on matched radio option=============");
+
+					break; // Exit the loop after finding the match
+				}
 			}
 
 		}
-		
-		
+
+
 	}  
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

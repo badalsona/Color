@@ -5,7 +5,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
-public class InstructionPage 
+import com.generic.BaseTest;
+
+public class InstructionPage extends BaseTest
 {
 	public InstructionPage(WebDriver driver)
 	{
@@ -15,9 +17,14 @@ public class InstructionPage
 	@FindBy(xpath="//button[@class='next-button']")
 	public static WebElement btn_next;
 	
-	//method 
-	public static void clickNextButton()
+	//method on instruction page
+	public void methodNavigateInstructionPage() throws InterruptedException
 	{
+		Thread.sleep(1000);
+		btn_next.click();
+		Thread.sleep(1000);
+		btn_next.click();
+		Thread.sleep(1000);
 		btn_next.click();
 	}
 }

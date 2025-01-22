@@ -1,223 +1,212 @@
 package com.POM;
 
-import java.util.List;
 
-import org.openqa.selenium.By;
+import java.util.List;
+import java.util.Random;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import com.generic.BaseTest;
 
+
+
 public class ColorVisionPage extends BaseTest
 {
-	
-	static  WebDriver driver;
-	
+
+
+
 	public ColorVisionPage(WebDriver driver)
 	{
 		PageFactory.initElements(driver, this);
 	}
-	
+
 	@FindBy (xpath="//div[@class='plate-container']/img")
 	public static WebElement img_screen;
-	
+
 	@FindBy (xpath="//div[@class='radio-option']/div/span")
 	public static WebElement btn_radioOption;
-	
-	@FindBy (tagName = "span")
+
+	@FindBy (xpath = "//div[@class='radio-option']/div/span")
 	public static List<WebElement> spanElements;
-	
+
 	@FindBy ( xpath= "//div[@class='radio-option']")
 	public static List<WebElement> radioOptions;
-	
-	
-	
-	
+
+	@FindBy (xpath="//div[@class='test-complete']/p")
+	public static WebElement txt_score;
+
+	@FindBy (xpath="//div[@class='test-complete']/button")
+	public static WebElement btn_restart;
+
+
+
+
 	//method
 	public static String getAttributeValueOfPlate() {
-	    // Assuming img_screen is already located elsewhere in your code
-	    String attributeValue = img_screen.getAttribute("alt");
-	    System.out.println("Plate Attribute Value: " + attributeValue);
-	    return attributeValue;
+		// Assuming img_screen is already located elsewhere in your code
+		String attributeValue = img_screen.getAttribute("alt");
+		System.out.println("Plate Attribute Value: " + attributeValue);
+		return attributeValue;
 	}
 
-	
-	
-	//value of color plate 
-	String pageNo_1= "1";
-	String pageNo_2= "1";
-	String pageNo_3= "2";
-	String pageNo_4= "3";
-	String pageNo_5= "4";
-	String pageNo_6= "4";
-	String pageNo_7= "5";
-	String pageNo_8= "6";
-	String pageNo_9= "7";
-	String pageNo_10= "9";
-	String pageNo_11= "1";
-	String pageNo_12= "1";
-	String pageNo_13= "2";
-	String pageNo_14= "3";
-	String pageNo_15= "4";
-	String pageNo_16= "5";
-	String pageNo_17= "5";
-	String pageNo_18= "6";
-	String pageNo_19= "6";
-	String pageNo_20= "7";
-	//String pageNo_21= "";
-	String pageNo_22= "7";
-	String pageNo_23= "8";
-	String pageNo_24= "9";
-	
-	
-	public static void getValueOfRadioOption()
+
+
+	public static String methodconvertplattonumber(String attributeValue)
 	{
-		String radioText = btn_radioOption.getText();
-		//span text value 
-		System.out.println(radioText);
-		
-		
-	}
-	
-	public static WebElement getRadioOptionByIndex(int index) {
-	   
 
-	    // Return the element at the given index
-	    if (index >= 0 && index < radioOptions.size()) {
-	        return radioOptions.get(index);
-	    } else {
-	        throw new IndexOutOfBoundsException("Invalid index for radio options: " + index);
-	    }
+		String pageNo;
+		if (attributeValue.equals("Plate 1") || attributeValue.equals("Plate 2") || 
+				attributeValue.equals("Plate 11") || attributeValue.equals("Plate 12")) {
+			pageNo = "1";
+		} else if (attributeValue.equals("Plate 3") || attributeValue.equals("Plate 13")) {
+			pageNo = "2";
+		} else if (attributeValue.equals("Plate 4") || attributeValue.equals("Plate 14")) {
+			pageNo = "3";
+		} else if (attributeValue.equals("Plate 5") || attributeValue.equals("Plate 6") || 
+				attributeValue.equals("Plate 15")) {
+			pageNo = "4";
+		} else if (attributeValue.equals("Plate 7") || attributeValue.equals("Plate 16") || 
+				attributeValue.equals("Plate 17")) {
+			pageNo = "5";
+		} else if (attributeValue.equals("Plate 8") || attributeValue.equals("Plate 18") || 
+				attributeValue.equals("Plate 19")) {
+			pageNo = "6";
+		} else if (attributeValue.equals("Plate 9") || attributeValue.equals("Plate 20") || 
+				attributeValue.equals("Plate 22")) {
+			pageNo = "7";
+		} else if (attributeValue.equals("Plate 23")) {
+			pageNo = "8";
+		} else if (attributeValue.equals("Plate 10") || attributeValue.equals("Plate 24")) {
+			pageNo = "9";
+		} else {
+			pageNo = "Can't see"; // Default case if no match is found
+		}
+
+		System.out.println("method implemented Page Number: " + pageNo);
+
+		return pageNo;
+
 	}
 
-	
-	public static String[] iterateSpanRadioOption()
+
+	public static void methodmatchAll() throws InterruptedException
 	{
-		 // Create an array to store the span values
-	    String[] spans = new String[spanElements.size()];
+		for(int click=0;click<=22;click++) // navigate to all screen 
+		{
+			String attributeValue = getAttributeValueOfPlate();
+			String number = methodconvertplattonumber(attributeValue);
 
-	    // Iterate through the spans and collect their text
-	    for (int i = 0; i < spanElements.size(); i++) {
-	        spans[i] = spanElements.get(i).getText();
-	        System.out.println("Span Value: " + spans[i]); // Print each value
-	    }
 
-	    // Return the array of span values
-	    return spans;
+			for (int i = 0; i < spanElements.size(); i++) 
+			{
+				WebElement spanElement = spanElements.get(i); // Get the current span element
+				String spanno = spanElement.getText(); // Get the text of the current span element
+				System.out.println("Span No: " + spanno); // Print the text for debugging
 
+				// Check if the current span element matches the expected number
+				if (number.equalsIgnoreCase(spanno)) 
+				{
+					Thread.sleep(1000); // Pause for demonstration purposes (can be replaced by better wait mechanisms)
+
+					// Get the corresponding radio option using the same index
+					WebElement matchedOption = spanElements.get(i);
+
+					matchedOption.click();
+
+					System.out.println("==========Clicked on matched radio option=============");
+
+					break; // Exit the loop after finding the match
+				}
+			}
+		}
 	}
-	
-	public static String switchplateNo(String attributeValue) {
-	    // Apply a switch-case based on the attributeValue
-	    String pageNo;
 
-	    switch (attributeValue) {
-	        case "Plate 1":
-	        case "Plate 2":
-	        case "Plate 11":
-	        case "Plate 12":	
-	            pageNo = "1";
-	            break;
-	        case "Plate 3":
-	        case "Plate 13":
-	            pageNo = "2";
-	            break;
-	        case "Plate 4":
-	        case "Plate 14":
-	            pageNo = "3";
-	            break;
-	        case "Plate 5":
-	        case "Plate 6":
-	        case "Plate 15":
-	            pageNo = "4";
-	            break;
-	        case "Plate 7":
-	        case "Plate 16":
-	        case "Plate 17":
-	            pageNo = "5";
-	            break;
-	        case "Plate 8":
-	        case "Plate 18":
-	        case "Plate 19":
-	            pageNo = "6";
-	            break;
-	        case "Plate 9":
-	        case "Plate 20":
-	        case "Plate 22":
-	            pageNo = "7";
-	            break;
-	        case "Plate 23":
-	            pageNo = "8";
-	            break;
-	        case "Plate 10":
-	        case "Plate 24":
-	            pageNo = "9";
-	            break;
-	        default:
-	            pageNo = "Unknown"; // Default case if no match is found
-	            break;
-	    }
 
-	    // Print and use the page number as needed
-	    System.out.println("Page Number: " + pageNo);
-	    
-	    return pageNo;
-	}
-	
-	
-	
-	
-	///method 
-	public static void matchSpanRadioOption(String SwitchedpageNo)
+	public static void score() throws InterruptedException
 	{
-		
-		
-		 // Create an array to store the span values
-	    String[] spans = new String[spanElements.size()];
-	    System.out.println(spans);
+		Thread.sleep(1000);
+		String score = txt_score.getText();
+		System.out.println(score);
+	}
 
-	    // Iterate through the spans and collect their text
-	    for (int i = 0; i < spanElements.size(); i++) 
-	    {
-	        spans[i] = spanElements.get(i).getText();
-	        System.out.println("Span Value: " + spans[i]); 
-	        String xpath = "(//div[@class='radio-option']/div/span)[" + (i + 1) + "]";
-	        System.out.println(xpath);
+	public static void restartTest() throws InterruptedException
+	{
+		Thread.sleep(1000);
+		btn_restart.click();
+
+	}
+
+
+	public static void cantSee() throws InterruptedException
+	{
+		for(int click=0;click<=22;click++) // navigate to all screen 
+		{
+			for (int i = 0; i < spanElements.size(); i++) 
+			{
+				WebElement spanElement = spanElements.get(i); // Get the current span element
+				String spanno = spanElement.getText(); // Get the text of the current span element
+				System.out.println("Span No: " + spanno); // Print the text for debugging
+				if(spanno.equalsIgnoreCase("Can't see"))
+				{
+					WebElement matchedOption = spanElements.get(i);
+					
+					Thread.sleep(1000);
+					matchedOption.click();
+
+					System.out.println("==========Clicked on matched radio option=============");
+
+					break; // Exit the loop after finding the match
+				}
+			}
+		}
+	}
+
+	public static void selectRandomOption() throws InterruptedException {
+	    for (int screen = 0; screen <= 22; screen++) { // Navigate through all screens
 	        
-	        
-			if(spans[i].equals(SwitchedpageNo))
-	        {
-		   WebElement matchingOption = driver.findElement(By.xpath(xpath));
-		   matchingOption.click();
-		    System.out.println("Clicked on the radio option with value: " );
-		    break; // Exit the loop after clicking
+	        if (!spanElements.isEmpty()) {
+	            // Generate a random index based on the size of the spanElements list
+	            Random random = new Random();
+	            int randomIndex = random.nextInt(spanElements.size());
+
+	            // Get the random option and click it
+	            WebElement randomOption = spanElements.get(randomIndex);
+	            String optionText = randomOption.getText(); // Get the text of the selected option
+	            System.out.println("Randomly selected option: " + optionText);
+
+	            // Perform the click
+	            Thread.sleep(1000); // Pause for demonstration (replace with WebDriverWait if needed)
+	            randomOption.click();
+	            System.out.println("==========Clicked on random radio option=============");
+	        } else {
+	            System.out.println("No radio options found on this screen!");
 	        }
-		        
-		 }
-	    
 
-	    ColorVisionPage.getAttributeValueOfPlate();
-
+	        
+	    }
 	}
+
 	
-	
-	
-	
-	
+
+
+
+
 }
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
+
+
+
+
+
+
 
